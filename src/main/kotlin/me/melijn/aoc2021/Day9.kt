@@ -1,5 +1,6 @@
 package me.melijn.aoc2021
 
+import me.melijn.aoc2021.utils.ConsoleColor
 import me.melijn.aoc2021.utils.info
 import me.melijn.aoc2021.utils.readTodaysInput
 
@@ -20,8 +21,9 @@ class Day9 {
         }
         for ((y, row) in map.withIndex()) {
             for ((x, item) in row.withIndex()) {
-                if (basinPoints.contains(y to x)) print(item)
-                else print(".")
+                if (basinPoints.contains(y to x)) print("${ConsoleColor.GREEN}$item${ConsoleColor.RESET}")
+                else if (item == 9) print("${ConsoleColor.RED}$item${ConsoleColor.RESET}")
+                else print("${ConsoleColor.BLUE}$item${ConsoleColor.RESET}")
             }
             println()
         }
@@ -34,17 +36,15 @@ class Day9 {
         val entry = map[y][x]
         val neighbours = mutableSetOf<Triple<Int, Int, Int>>()
         neighbours.add(Triple(y, x, entry))
-        for (i in -1..1) {
-            for (j in -1..1) {
-                if (j == 0 && i == 0) continue
-                val newX = x + i
-                val newY = y + j
-                if (newX < 0 || newY < 0 || newX >= map[0].size || newY >= map.size) continue
-                val neighbour = map[newY][newX]
-                if (neighbour != 9 && neighbour == entry + 1) {
-                    neighbours.add(Triple(newY, newX, neighbour))
-                    neighbours.addAll(getBasinNeighbours(newY, newX, map))
-                }
+        for ((i, j) in listOf((1 to 0), (-1 to 0), (0 to -1), (0 to 1))) {
+            if (j == 0 && i == 0) continue
+            val newX = x + i
+            val newY = y + j
+            if (newX < 0 || newY < 0 || newX >= map[0].size || newY >= map.size) continue
+            val neighbour = map[newY][newX]
+            if (neighbour != 9 && neighbour > entry) {
+                neighbours.add(Triple(newY, newX, neighbour))
+                neighbours.addAll(getBasinNeighbours(newY, newX, map))
             }
         }
         return neighbours
@@ -67,14 +67,12 @@ class Day9 {
     private fun isLowPoint(y: Int, x: Int, map: List<List<Int>>): Boolean {
         val entry = map[y][x]
         val neighbours = mutableListOf<Int>()
-        for (i in -1..1) {
-            for (j in -1..1) {
-                if (j == 0 && i == 0) continue
-                val newX = x + i
-                val newY = y + j
-                if (newX < 0 || newY < 0 || newX >= map[0].size || newY >= map.size) continue
-                neighbours.add(map[newY][newX])
-            }
+        for ((i, j) in listOf((1 to 0), (-1 to 0), (0 to -1), (0 to 1))) {
+            if (j == 0 && i == 0) continue
+            val newX = x + i
+            val newY = y + j
+            if (newX < 0 || newY < 0 || newX >= map[0].size || newY >= map.size) continue
+            neighbours.add(map[newY][newX])
         }
         return neighbours.all { it > entry }
     }
