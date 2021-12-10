@@ -1,5 +1,5 @@
 package me.melijn.aoc2021
 
 fun main() {
-    Day9()
+    Day10()
 }
