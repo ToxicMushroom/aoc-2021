@@ -6,9 +6,9 @@ import java.util.*
 
 class Day10 {
 
-    val charsMap = mapOf('[' to ']', '(' to ')', '{' to '}', '<' to '>',)
-    val pointsMap = mapOf(')' to 3, ']' to 57, '}' to 1197, '>' to 25137,)
-    val points2Map = mapOf(')' to 1, ']' to 2, '}' to 3, '>' to 4,)
+    private val charsMap = mapOf('[' to ']', '(' to ')', '{' to '}', '<' to '>',)
+    private val pointsMap = mapOf(')' to 3, ']' to 57, '}' to 1197, '>' to 25137,)
+    private val points2Map = mapOf(')' to 1, ']' to 2, '}' to 3, '>' to 4,)
 
     init {
         val input = readTodaysInput().lines()
